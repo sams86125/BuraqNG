@@ -24,12 +24,12 @@ class V2RayTestService : Service() {
     override fun onCreate() {
         super.onCreate()
         Seq.setContext(this)
+        Libv2ray.initV2Env(Utils.userAssetPath(this), Utils.getDeviceIdForXUDPBaseKey())
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         when (intent?.getIntExtra("key", 0)) {
             MSG_MEASURE_CONFIG -> {
-                Libv2ray.initV2Env(Utils.userAssetPath(this), Utils.getDeviceIdForXUDPBaseKey())
                 val contentPair = intent.getSerializableExtra("content") as Pair<String, String>
                 realTestScope.launch {
                     val result = SpeedtestUtil.realPing(contentPair.second)
@@ -41,7 +41,6 @@ class V2RayTestService : Service() {
                 realTestScope.coroutineContext[Job]?.cancelChildren()
             }
         }
-        this.stopSelf(startId)
         return super.onStartCommand(intent, flags, startId)
     }
 
