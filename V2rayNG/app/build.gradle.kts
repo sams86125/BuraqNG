@@ -166,7 +166,9 @@ dependencies {
     implementation(libs.language.json)
 
     // Intent and Utility Libraries
-    implementation(libs.quickie.foss)
+
+    //implementation(libs.quickie.foss)
+    implementation(libs.quickie.bundled)
     implementation(libs.core)
 
     // AndroidX Lifecycle and Architecture Components

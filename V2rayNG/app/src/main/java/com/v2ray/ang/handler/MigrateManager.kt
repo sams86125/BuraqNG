@@ -140,7 +140,7 @@ object MigrateManager {
             config.localAddress = Utils.removeWhiteSpace((wireguard.address as List<*>).joinToString(",")).toString()
             config.publicKey = wireguard.peers?.getOrNull(0)?.publicKey
             config.mtu = wireguard.mtu
-            config.reserved = Utils.removeWhiteSpace(wireguard.reserved?.joinToString(",")).toString()
+            config.reserved = Utils.removeWhiteSpace(wireguard.reserved?.joinToString(",")).orEmpty()
         }
         return config
     }
