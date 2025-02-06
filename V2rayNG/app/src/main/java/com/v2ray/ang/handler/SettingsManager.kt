@@ -29,7 +29,8 @@ object SettingsManager {
     fun initRoutingRulesets(context: Context) {
         val exist = MmkvManager.decodeRoutingRulesets()
         if (exist.isNullOrEmpty()) {
-            val rulesetList = getPresetRoutingRulesets(context)
+            // set iran lite routing rules from index 3
+            val rulesetList = getPresetRoutingRulesets(context,3)
             MmkvManager.encodeRoutingRulesets(rulesetList)
         }
     }
@@ -185,7 +186,7 @@ object SettingsManager {
         val extFolder = Utils.userAssetPath(context)
 
         try {
-            val geo = arrayOf("geosite.dat", "geoip.dat")
+            val geo = arrayOf("geosite.dat", "geoip.dat", "geosite_c4u.dat", "geoip_c4u.dat")
             assets.list("")
                 ?.filter { geo.contains(it) }
                 ?.filter { !File(extFolder, it).exists() }

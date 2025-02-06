@@ -96,7 +96,8 @@ object AppConfig {
     const val v2rayNGWikiMode = "$v2rayNGUrl/wiki/Mode"
     const val v2rayNGPrivacyPolicy = "https://raw.githubusercontent.com/2dust/v2rayNG/master/CR.md"
     const val PromotionUrl = "aHR0cHM6Ly85LjIzNDQ1Ni54eXovYWJjLmh0bWw="
-    const val GeoUrl = "https://github.com/Chocolate4U/Iran-v2ray-rules/releases/latest/download/"
+    const val GeoUrl = "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/"
+    const val GeoUrl_c4u = "https://github.com/Chocolate4U/Iran-v2ray-rules/releases/latest/download/"
     const val TgChannelUrl = "https://t.me/github_2dust"
     const val DelayTestUrl = "https://www.gstatic.com/generate_204"
     const val DelayTestUrl2 = "https://www.google.com/generate_204"
@@ -115,7 +116,7 @@ object AppConfig {
     const val PORT_SOCKS = "10808"
     const val WIREGUARD_LOCAL_ADDRESS_V4 = "172.16.0.2/32"
     const val WIREGUARD_LOCAL_ADDRESS_V6 = "2606:4700:110:8f81:d551:a0:532e:a2b3/128"
-    const val WIREGUARD_LOCAL_MTU = "1420"
+    const val WIREGUARD_LOCAL_MTU = "1280"
   
 
     const val WIREGUARD_keep_alive = "5"

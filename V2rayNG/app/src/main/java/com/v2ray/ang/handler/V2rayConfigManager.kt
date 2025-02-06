@@ -243,7 +243,7 @@ object V2rayConfigManager {
             if (key.enabled && key.outboundTag == tag && !key.domain.isNullOrEmpty()) {
                 key.domain?.forEach {
                     if (it != GEOSITE_PRIVATE
-                        && (it.startsWith("geosite:") || it.startsWith("domain:"))
+                        && ( it.startsWith("geosite:") || it.startsWith("domain:") || it.startsWith("ext:geosite") || it.startsWith("regexp:") )
                     ) {
                         domain.add(it)
                     }
@@ -502,9 +502,12 @@ object V2rayConfigManager {
             if (MmkvManager.decodeSettingsBool(AppConfig.PREF_FRAGMENT_ENABLED, false) == false) {
                 return true
             }
-            if (v2rayConfig.outbounds[0].streamSettings?.security != AppConfig.TLS
-                && v2rayConfig.outbounds[0].streamSettings?.security != AppConfig.REALITY
-            ) {
+
+            if (v2rayConfig.outbounds[0].protocol.lowercase() == "wireguard") {
+                return true
+            }
+
+            if (v2rayConfig.outbounds[0].streamSettings?.network == "quic") {
                 return true
             }
 
@@ -521,17 +524,17 @@ object V2rayConfigManager {
                 && packets == "tlshello"
             ) {
                 packets = "1-3"
-            } else if (v2rayConfig.outbounds[0].streamSettings?.security == AppConfig.TLS
-                && packets != "tlshello"
+            } else if (v2rayConfig.outbounds[0].streamSettings?.security != AppConfig.TLS
+                && packets == "tlshello"
             ) {
-                packets = "tlshello"
+                packets = "fakehost"
             }
 
             fragmentOutbound.settings = V2rayConfig.OutboundBean.OutSettingsBean(
                 fragment = V2rayConfig.OutboundBean.OutSettingsBean.FragmentBean(
                     packets = packets,
                     length = MmkvManager.decodeSettingsString(AppConfig.PREF_FRAGMENT_LENGTH)
-                        ?: "50-100",
+                        ?: "10-20",
                     interval = MmkvManager.decodeSettingsString(AppConfig.PREF_FRAGMENT_INTERVAL)
                         ?: "10-20"
                 ),

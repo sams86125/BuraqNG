@@ -27,6 +27,8 @@ import com.v2ray.ang.dto.Language
 import com.v2ray.ang.extension.toast
 import com.v2ray.ang.handler.MmkvManager
 import com.v2ray.ang.service.V2RayServiceManager
+import org.json.JSONArray
+import org.json.JSONObject
 import java.io.IOException
 import java.net.*
 import java.util.*
@@ -286,7 +288,7 @@ object Utils {
 
     fun urlDecode(url: String): String {
         return try {
-            URLDecoder.decode(url, Charsets.UTF_8.toString())
+            URLDecoder.decode(url, Charsets.UTF_8.name())
         } catch (e: Exception) {
             e.printStackTrace()
             url
@@ -295,7 +297,7 @@ object Utils {
 
     fun urlEncode(url: String): String {
         return try {
-            URLEncoder.encode(url, Charsets.UTF_8.toString()).replace("+", "%20")
+            URLEncoder.encode(url, Charsets.UTF_8.name()).replace("+", "%20")
         } catch (e: Exception) {
             e.printStackTrace()
             url
@@ -500,10 +502,83 @@ object Utils {
 
     fun isXray(): Boolean = (ANG_PACKAGE.startsWith("com.v2ray.ang"))
 
-    fun removeKeepAlive(mystr: String): String {
+
+
+    //----------------
+    private fun removeKeepAliveByRegex(mystr: String): String {
         val keepAliveRegex = "\"keepAlive\"\\s*:\\s*\\d+\\s*,?".toRegex(RegexOption.IGNORE_CASE)
         return keepAliveRegex.replace(mystr, "")
     }
+
+
+
+    fun removeKeepAliveAndRouting(content: String): String {
+
+        // --------------- remove routing rules for lighter test --------
+        try{
+            val jt7 = JSONObject(content)
+
+            try {
+                val empty_jarray = JSONArray()
+                jt7.getJSONObject("routing")
+                    .put("rules", empty_jarray)
+            }catch (_: org.json.JSONException) {
+            }
+
+            try {
+                val empty_jobj = JSONObject()
+                jt7.getJSONObject("dns")
+                    .put("hosts", empty_jobj)
+            }catch (_: org.json.JSONException) {
+            }
+
+            try {
+                val empty_jarr = JSONArray()
+                empty_jarr.put("1.1.1.1")
+                jt7.getJSONObject("dns")
+                    .put("servers", empty_jarr)
+            }catch (_: org.json.JSONException) {
+            }
+        // --------------- end of routing rule deletion ------------------
+
+            if (content.contains("keepAlive" , ignoreCase = true)) {
+
+                var protocol = "wireguard"
+                try{
+                    protocol = jt7.getJSONArray("outbounds")
+                        .getJSONObject(0)
+                        .getString("protocol")
+
+//                    println("config protocol:" + protocol)
+                }catch (e794: org.json.JSONException){
+//                    println("json wireguard ERR: " + e794.message)
+                }
+
+                if(protocol.lowercase() == "wireguard") {
+
+                    jt7.getJSONArray("outbounds")
+                        .getJSONObject(0)
+                        .getJSONObject("settings")
+                        .getJSONArray("peers")
+                        .getJSONObject(0)
+                        .remove("keepAlive")
+
+//                    println("keepAlive removed successfully")
+                }
+
+            }
+
+            val result = jt7.toString(2).replace("\\/", "/")
+            return result
+        }catch (e640: Exception) {
+//                        println("Generic ERR when removing rule from TEST: $e640")
+        }
+
+        return content
+    }
+    //--------------------------------------------
+
+
 
 }
 

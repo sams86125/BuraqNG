@@ -24,7 +24,7 @@ object QRCodeDecoder {
      */
     fun createQRCode(text: String, size: Int = 800): Bitmap? {
         return runCatching {
-            val hints = mapOf(EncodeHintType.CHARACTER_SET to Charsets.UTF_8)
+            val hints = mapOf(EncodeHintType.CHARACTER_SET to Charsets.UTF_8.name())
             val bitMatrix = QRCodeWriter().encode(text, BarcodeFormat.QR_CODE, size, size, hints)
             val pixels = IntArray(size * size) { i ->
                 if (bitMatrix.get(i % size, i / size)) 0xff000000.toInt() else 0xffffffff.toInt()
@@ -116,6 +116,6 @@ object QRCodeDecoder {
         )
         HINTS[DecodeHintType.TRY_HARDER] = BarcodeFormat.QR_CODE
         HINTS[DecodeHintType.POSSIBLE_FORMATS] = allFormats
-        HINTS[DecodeHintType.CHARACTER_SET] = Charsets.UTF_8
+        HINTS[DecodeHintType.CHARACTER_SET] = Charsets.UTF_8.name()
     }
 }

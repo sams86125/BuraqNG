@@ -35,6 +35,7 @@ import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.Disposable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import libv2ray.Libv2ray
 import libv2ray.V2RayPoint
@@ -257,31 +258,44 @@ object V2RayServiceManager {
         }
     }
 
+
+    private fun f35(flag:Boolean): Pair<Long,String> {
+        var time = -1L
+        var errstr = ""
+        try{
+            time = v2rayPoint.measureDelay(Utils.getDelayTestUrl(flag))
+        }catch (e: Exception) {
+            errstr = e.message?.substringAfter("\":") ?: "empty message"
+        }
+        return Pair(time,errstr)
+    }
+
     private fun measureV2rayDelay() {
         CoroutineScope(Dispatchers.IO).launch {
             val service = serviceControl?.get()?.getService() ?: return@launch
-            var time = -1L
-            var errstr = ""
+
+            var t1 = -1L
+            var t2 = -1L
+            var estr1 = ""
             if (v2rayPoint.isRunning) {
                 try {
-                    time = v2rayPoint.measureDelay(Utils.getDelayTestUrl())
+                    val g1 = async { f35(false) }
+                    val g2 = async { f35(true) }
+
+                    val r1 = g1.await()
+                    val r2 = g2.await()
+                    t1 = r1.first
+                    estr1 = r1.second
+                    t2 = r2.first
                 } catch (e: Exception) {
-                    Log.d(ANG_PACKAGE, "measureV2rayDelay: $e")
-                    errstr = e.message?.substringAfter("\":") ?: "empty message"
-                }
-                if (time == -1L) {
-                    try {
-                        time = v2rayPoint.measureDelay(Utils.getDelayTestUrl(true))
-                    } catch (e: Exception) {
-                        Log.d(ANG_PACKAGE, "measureV2rayDelay: $e")
-                        errstr = e.message?.substringAfter("\":") ?: "empty message"
-                    }
+                    Log.d(ANG_PACKAGE, "err: $e");
                 }
             }
-            val result = if (time == -1L) {
-                service.getString(R.string.connection_test_error, errstr)
+
+            val result = if ( (t1 == -1L) && (t2 == -1L) ) {
+                service.getString(R.string.connection_test_error, estr1)
             } else {
-                service.getString(R.string.connection_test_available, time)
+                service.getString(R.string.connection_test_available, t1, t2)
             }
 
             MessageUtil.sendMsg2UI(service, AppConfig.MSG_MEASURE_DELAY_SUCCESS, result)

@@ -50,6 +50,13 @@ data class ProfileItem(
     var localAddress: String? = null,
     var reserved: String? = null,
     var mtu: Int? = null,
+    var keepAlive: Int? = null,
+    var wnoise: String? = null,
+    var wnoisecount: String? = null,
+    var wnoisedelay: String? = null,
+    var wpayloadsize: String? = null,
+
+
 
     var obfsPassword: String? = null,
     var portHopping: String? = null,
@@ -110,6 +117,12 @@ data class ProfileItem(
                 && this.localAddress == obj.localAddress
                 && this.reserved == obj.reserved
                 && this.mtu == obj.mtu
+
+                && this.keepAlive == obj.keepAlive
+                && this.wnoise == obj.wnoise
+                && this.wnoisecount == obj.wnoisecount
+                && this.wnoisedelay == obj.wnoisedelay
+                && this.wpayloadsize == obj.wpayloadsize
 
                 && this.obfsPassword == obj.obfsPassword
                 && this.portHopping == obj.portHopping

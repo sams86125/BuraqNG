@@ -81,7 +81,12 @@ object Hysteria2Fmt : FmtBase() {
             Hysteria2Bean.TransportBean(
                 type = "udp",
                 udp = Hysteria2Bean.TransportBean.TransportUdpBean(
-                    hopInterval = (config.portHoppingInterval ?: "30") + "s"
+                    //hopInterval = (config.portHoppingInterval ?: "30") + "s"
+                    hopInterval = if(config.portHoppingInterval.isNullOrEmpty()) {
+                        "30s"
+                    }else{
+                        (config.portHoppingInterval) + "s"
+                    }
                 )
             )
 

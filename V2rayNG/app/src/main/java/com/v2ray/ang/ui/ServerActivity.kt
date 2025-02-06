@@ -22,6 +22,11 @@ import com.v2ray.ang.AppConfig.TLS
 import com.v2ray.ang.AppConfig.WIREGUARD_LOCAL_ADDRESS_V4
 import com.v2ray.ang.AppConfig.WIREGUARD_LOCAL_ADDRESS_V6
 import com.v2ray.ang.AppConfig.WIREGUARD_LOCAL_MTU
+import com.v2ray.ang.AppConfig.WIREGUARD_keep_alive
+import com.v2ray.ang.AppConfig.WIREGUARD_wnoise
+import com.v2ray.ang.AppConfig.WIREGUARD_wnoisecount
+import com.v2ray.ang.AppConfig.WIREGUARD_wnoisedelay
+import com.v2ray.ang.AppConfig.WIREGUARD_wpayloadsize
 import com.v2ray.ang.R
 import com.v2ray.ang.dto.EConfigType
 import com.v2ray.ang.dto.NetworkType
@@ -131,6 +136,11 @@ class ServerActivity : BaseActivity() {
     private val et_extra: EditText? by lazy { findViewById(R.id.et_extra) }
     private val layout_extra: LinearLayout? by lazy { findViewById(R.id.layout_extra) }
 
+    private val et_keepalive: EditText? by lazy { findViewById(R.id.et_keepalive) }
+    private val et_wnoise: EditText? by lazy { findViewById(R.id.et_wnoise) }
+    private val et_wnoisecount: EditText? by lazy { findViewById(R.id.et_wnoisecount) }
+    private val et_wnoisedelay: EditText? by lazy { findViewById(R.id.et_wnoisedelay) }
+    private val et_wpayloadsize: EditText? by lazy { findViewById(R.id.et_wpayloadsize) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -180,7 +190,7 @@ class ServerActivity : BaseActivity() {
 
                 et_request_host?.text = Utils.getEditable(
                     when (networks[position]) {
-                        //"quic" -> config?.quicSecurity
+                        "quic" -> config?.quicSecurity
                         NetworkType.GRPC.type -> config?.authority
                         else -> config?.host
                     }.orEmpty()
@@ -188,7 +198,7 @@ class ServerActivity : BaseActivity() {
                 et_path?.text = Utils.getEditable(
                     when (networks[position]) {
                         NetworkType.KCP.type -> config?.seed
-                        //"quic" -> config?.quicKey
+                        "quic" -> config?.quicKey
                         NetworkType.GRPC.type -> config?.serviceName
                         else -> config?.path
                     }.orEmpty()
@@ -202,7 +212,7 @@ class ServerActivity : BaseActivity() {
                             NetworkType.HTTP_UPGRADE.type -> R.string.server_lab_request_host_httpupgrade
                             NetworkType.XHTTP.type -> R.string.server_lab_request_host_xhttp
                             NetworkType.H2.type -> R.string.server_lab_request_host_h2
-                            //"quic" -> R.string.server_lab_request_host_quic
+                            "quic" -> R.string.server_lab_request_host_quic
                             NetworkType.GRPC.type -> R.string.server_lab_request_host_grpc
                             else -> R.string.server_lab_request_host
                         }
@@ -217,7 +227,7 @@ class ServerActivity : BaseActivity() {
                             NetworkType.HTTP_UPGRADE.type -> R.string.server_lab_path_httpupgrade
                             NetworkType.XHTTP.type -> R.string.server_lab_path_xhttp
                             NetworkType.H2.type -> R.string.server_lab_path_h2
-                            //"quic" -> R.string.server_lab_path_quic
+                            "quic" -> R.string.server_lab_path_quic
                             NetworkType.GRPC.type -> R.string.server_lab_path_grpc
                             else -> R.string.server_lab_path
                         }
@@ -331,6 +341,15 @@ class ServerActivity : BaseActivity() {
                 config.localAddress ?: "$WIREGUARD_LOCAL_ADDRESS_V4,$WIREGUARD_LOCAL_ADDRESS_V6"
             )
             et_local_mtu?.text = Utils.getEditable(config.mtu?.toString() ?: WIREGUARD_LOCAL_MTU)
+
+            et_keepalive?.text = Utils.getEditable(config.keepAlive?.toString() ?: WIREGUARD_keep_alive)
+
+            et_wnoise?.text = Utils.getEditable(config.wnoise.orEmpty())
+            et_wnoisecount?.text = Utils.getEditable(config.wnoisecount.orEmpty())
+            et_wnoisedelay?.text = Utils.getEditable(config.wnoisedelay.orEmpty())
+            et_wpayloadsize?.text = Utils.getEditable(config.wpayloadsize.orEmpty())
+
+
         } else if (config.configType == EConfigType.HYSTERIA2) {
             et_obfs_password?.text = Utils.getEditable(config.obfsPassword)
             et_port_hop?.text = Utils.getEditable(config.portHopping)
@@ -512,6 +531,13 @@ class ServerActivity : BaseActivity() {
             config.reserved = et_reserved1?.text.toString().trim()
             config.localAddress = et_local_address?.text.toString().trim()
             config.mtu = Utils.parseInt(et_local_mtu?.text.toString())
+
+            config.keepAlive = Utils.parseInt(et_keepalive?.text.toString())
+            config.wnoise = et_wnoise?.text.toString().trim()
+            config.wnoisecount = et_wnoisecount?.text.toString().trim()
+            config.wnoisedelay = et_wnoisedelay?.text.toString().trim()
+            config.wpayloadsize = et_wpayloadsize?.text.toString().trim()
+
         } else if (config.configType == EConfigType.HYSTERIA2) {
             config.obfsPassword = et_obfs_password?.text?.toString()
             config.portHopping = et_port_hop?.text?.toString()
@@ -577,6 +603,10 @@ class ServerActivity : BaseActivity() {
             }
 
             NetworkType.KCP.type -> {
+                kcpAndQuicTypes
+            }
+
+            "quic" -> {
                 kcpAndQuicTypes
             }
 

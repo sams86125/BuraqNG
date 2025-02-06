@@ -123,7 +123,7 @@ object SpeedtestUtil {
             elapsed = SystemClock.elapsedRealtime() - start
 
             if (code == 204 || code == 200 && conn.responseLength == 0L) {
-                result = context.getString(R.string.connection_test_available, elapsed)
+                result = context.getString(R.string.connection_test_available, elapsed , elapsed)
             } else {
                 throw IOException(
                     context.getString(

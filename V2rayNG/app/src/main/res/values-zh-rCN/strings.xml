@@ -87,7 +87,7 @@
     <string name="server_lab_secret_key">SecretKey</string>
     <string name="server_lab_reserved">Reserved(可选，逗号隔开)</string>
     <string name="server_lab_local_address">本地地址(可选IPv4/IPv6，逗号隔开)</string>
-    <string name="server_lab_local_mtu">Mtu(可选, 默认1420)</string>
+    <string name="server_lab_local_mtu">Mtu(可选, 默认1280)</string>
     <string name="toast_success">成功</string>
     <string name="toast_failure">失败</string>
     <string name="toast_none_data">没有数据</string>
@@ -284,7 +284,7 @@
     <string name="connection_test_pending">"检查网络连接"</string>
     <string name="connection_test_testing">"测试中…"</string>
     <string name="connection_test_testing_count">测试 %d 个配置中…</string>
-    <string name="connection_test_available">"连接成功：延时 %d 毫秒"</string>
+    <string name="connection_test_available">"连接成功：延时 [ %d , %d ] 毫秒"</string>
     <string name="connection_test_error">"失败：%s"</string>
     <string name="connection_test_fail">"无互联网连接"</string>
     <string name="connection_test_error_status_code">"状态码无效（#%d）"</string>
@@ -327,7 +327,9 @@
         <item>绕过大陆(Whitelist)</item>
         <item>黑名单(Blacklist)</item>
         <item>全局(Global)</item>
-        <item>伊朗(Iran)</item>
+        <item>Iran lite</item>
+        <item>Iran medium</item>
+        <item>Iran heavy</item>
     </string-array>
 
     <string-array name="vpn_bypass_lan">

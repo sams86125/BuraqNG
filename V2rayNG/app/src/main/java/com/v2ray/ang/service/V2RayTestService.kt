@@ -65,7 +65,7 @@ class V2RayTestService : Service() {
             if (!config.status) {
                 return retFailure
             }
-            return SpeedtestUtil.realPing(config.content)
+            return SpeedtestUtil.realPing(Utils.removeKeepAliveAndRouting(config.content))
         }
     }
 }

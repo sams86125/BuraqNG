@@ -87,7 +87,7 @@
     <string name="server_lab_secret_key">SecretKey</string>
     <string name="server_lab_reserved">Reserved (Không bắt buộc)</string>
     <string name="server_lab_local_address">Địa chỉ cục bộ (IPv4 / IPv6, phân cách bằng dấu phẩy)</string>
-    <string name="server_lab_local_mtu">MTU (Không bắt buộc, mặc định là 1420)</string>
+    <string name="server_lab_local_mtu">MTU (Không bắt buộc, mặc định là 1280)</string>
     <string name="toast_success">Thành công!</string>
     <string name="toast_failure">Đã xảy ra lỗi, vui lòng thử lại!</string>
     <string name="toast_none_data">Không có gì ở đây!</string>
@@ -287,7 +287,7 @@
     <string name="connection_test_pending">Kiểm tra kết nối</string>
     <string name="connection_test_testing">Đang kiểm tra kết nối mạng...</string>
     <string name="connection_test_testing_count">Testing %d configurations…</string>
-    <string name="connection_test_available">Kiểm tra thành công: thời gian truy cập Google là %d ms</string>
+    <string name="connection_test_available">Success: ping [ %d , %d ] ms</string>
     <string name="connection_test_error">Lỗi kết nối mạng, hãy thử đổi cấu hình hoặc kiểm tra lại! Mã lỗi: %s</string>
     <string name="connection_test_fail">Không có kết nối mạng!</string>
     <string name="connection_test_error_status_code">Mã lỗi: #%d</string>

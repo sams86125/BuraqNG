@@ -28,6 +28,7 @@
         <item>httpupgrade</item>
         <item>xhttp</item>
         <item>h2</item>
+        <item>quic</item>
         <item>grpc</item>
     </string-array>
 

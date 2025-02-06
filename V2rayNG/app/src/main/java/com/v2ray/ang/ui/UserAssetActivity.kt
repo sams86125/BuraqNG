@@ -49,6 +49,7 @@ class UserAssetActivity : BaseActivity() {
 
     val extDir by lazy { File(Utils.userAssetPath(this)) }
     val builtInGeoFiles = arrayOf("geosite.dat", "geoip.dat")
+    val builtInGeoFiles_c4u = arrayOf("geosite_c4u.dat", "geoip_c4u.dat")
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -191,34 +192,59 @@ class UserAssetActivity : BaseActivity() {
         return true
     }
 
+
+
     private fun downloadGeoFiles() {
-        val dialog = AlertDialog.Builder(this)
-            .setView(LayoutProgressBinding.inflate(layoutInflater).root)
-            .setCancelable(false)
-            .show()
-        toast(R.string.msg_downloading_content)
+//        val dialog = AlertDialog.Builder(this)
+//            .setView(LayoutProgressBinding.inflate(layoutInflater).root)
+//            .setCancelable(false)
+//            .show()
+//        toast(R.string.msg_downloading_content)
 
         val httpPort = SettingsManager.getHttpPort()
         var assets = MmkvManager.decodeAssetUrls()
         assets = addBuiltInGeoItems(assets)
 
         assets.forEach {
-            //toast(getString(R.string.msg_downloading_content) + it)
-            lifecycleScope.launch(Dispatchers.IO) {
-                var result = downloadGeo(it.second, 60000, httpPort)
-                if (!result) {
-                    result = downloadGeo(it.second, 60000, 0)
-                }
-                launch(Dispatchers.Main) {
-                    if (result) {
-                        toast(getString(R.string.toast_success) + " " + it.second.remarks)
-                        binding.recyclerView.adapter?.notifyDataSetChanged()
-                    } else {
-                        toast(getString(R.string.toast_failure) + " " + it.second.remarks)
+
+            try {
+                val builder = AlertDialog.Builder(this)
+                    .setTitle("Update " + it.second.remarks + " ?")
+                    .setMessage(
+                        String.format(
+                            "Download %s ?\n\nurl:\n%s",
+                            it.second.remarks,
+                            it.second.url
+                        )
+                    )
+                    .setPositiveButton("Download") { dialog, id ->
+                        toast(getString(R.string.msg_downloading_content)+" -> "+it.second.remarks)
+                        lifecycleScope.launch(Dispatchers.IO) {
+                            var result = downloadGeo(it.second, 60000, httpPort)
+                            if (!result) {
+                                result = downloadGeo(it.second, 60000, 0)
+                            }
+                            launch(Dispatchers.Main) {
+                                if (result) {
+                                    toast(getString(R.string.toast_success) + " " + it.second.remarks)
+                                    binding.recyclerView.adapter?.notifyDataSetChanged()
+                                } else {
+                                    toast(getString(R.string.toast_failure) + " " + it.second.remarks)
+                                }
+//                        dialog.dismiss()
+                            }
+                        }
                     }
-                    dialog.dismiss()
-                }
+                    .setNegativeButton("Cancel") { dialog, id ->
+
+                    }
+
+                builder.create().show()
+
+            } catch (_:Exception){
+
             }
+
         }
     }
 
@@ -272,6 +298,16 @@ class UserAssetActivity : BaseActivity() {
                 )
             }
 
+        builtInGeoFiles_c4u
+            .filter { geoFile -> assets.none { it.second.remarks == geoFile } }
+            .forEach {
+                list.add(
+                    Utils.getUuid() to AssetUrlItem(
+                        it,
+                        (AppConfig.GeoUrl_c4u + it).replace("_c4u","")
+                    )
+                )
+            }
         return list + assets
     }
 
@@ -314,6 +350,9 @@ class UserAssetActivity : BaseActivity() {
             }
 
             if (item.second.remarks in builtInGeoFiles && item.second.url == AppConfig.GeoUrl + item.second.remarks) {
+                holder.itemUserAssetBinding.layoutEdit.visibility = GONE
+                //holder.itemUserAssetBinding.layoutRemove.visibility = GONE
+            }else if (item.second.remarks in builtInGeoFiles_c4u && item.second.url == AppConfig.GeoUrl_c4u + item.second.remarks.replace("_c4u","")) {
                 holder.itemUserAssetBinding.layoutEdit.visibility = GONE
                 //holder.itemUserAssetBinding.layoutRemove.visibility = GONE
             } else {

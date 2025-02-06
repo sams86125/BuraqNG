@@ -88,7 +88,7 @@
     <string name="server_lab_secret_key" translatable="false">সিক্রেট কী</string>
     <string name="server_lab_reserved">সংরক্ষিত (ঐচ্ছিক)</string>
     <string name="server_lab_local_address">স্থানীয় ঠিকানা (ঐচ্ছিক IPv4/IPv6, কমা দ্বারা পৃথক করা)</string>
-    <string name="server_lab_local_mtu">MTU (ঐচ্ছিক, ডিফল্ট 1420)</string>
+    <string name="server_lab_local_mtu">MTU (ঐচ্ছিক, ডিফল্ট 1280)</string>
     <string name="toast_success">সফল</string>
     <string name="toast_failure">ব্যর্থ</string>
     <string name="toast_none_data">কোনও তথ্য নেই</string>
@@ -289,7 +289,7 @@
     <string name="connection_test_pending">সংযোগ পরীক্ষা করুন</string>
     <string name="connection_test_testing">পরীক্ষা চলছে…</string>
     <string name="connection_test_testing_count">Testing %d configurations…</string>
-    <string name="connection_test_available">সফল: HTTP সংযোগ নিয়েছে %dms</string>
+    <string name="connection_test_available">সফল: ping [ %d , %d ] ms</string>
     <string name="connection_test_error">ইন্টারনেট সংযোগ সনাক্ত করতে ব্যর্থ: %s</string>
     <string name="connection_test_fail">ইন্টারনেট উপলব্ধ নয়</string>
     <string name="connection_test_error_status_code">ত্রুটি কোড: #%d</string>
@@ -328,7 +328,9 @@
         <item>চায়না হোয়াইটলিস্ট</item>
         <item>চায়না ব্ল্যাকলিস্ট</item>
         <item>গ্লোবাল</item>
-        <item>ইরান হোয়াইটলিস্ট</item>
+        <item>Iran lite</item>
+        <item>Iran medium</item>
+        <item>Iran heavy</item>
     </string-array>
 
     <string-array name="vpn_bypass_lan">

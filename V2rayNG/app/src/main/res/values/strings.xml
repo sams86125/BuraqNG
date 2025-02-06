@@ -88,7 +88,7 @@
     <string name="server_lab_secret_key">Secret or PrivateKey</string>
     <string name="server_lab_reserved">Reserved(Optional, separated by commas)</string>
     <string name="server_lab_local_address">Local address (optional IPv4/IPv6, separated by commas)</string>
-    <string name="server_lab_local_mtu">Mtu(optional, default 1420)</string>
+    <string name="server_lab_local_mtu">Mtu(optional, default 1280)</string>
     <string name="toast_success">Success</string>
     <string name="toast_failure">Failure</string>
     <string name="toast_none_data">There is nothing</string>
@@ -282,7 +282,7 @@
     <string name="routing_settings_delete">Clear</string>
     <string name="routing_settings_rule_title">Routing Rule Settings</string>
     <string name="routing_settings_add_rule">Add rule</string>
-    <string name="routing_settings_import_predefined_rulesets">Import predefined rulesets</string>
+    <string name="routing_settings_import_predefined_rulesets">Restore Default Rules …</string>
     <string name="routing_settings_import_rulesets_tip">Existing rulesets will be deleted, are you sure to continue?</string>
     <string name="routing_settings_import_rulesets_from_clipboard">Import ruleset from clipboard</string>
     <string name="routing_settings_import_rulesets_from_qrcode">Import ruleset from QRcode</string>
@@ -300,7 +300,7 @@
     <string name="connection_test_pending">Check Connectivity</string>
     <string name="connection_test_testing">Testing…</string>
     <string name="connection_test_testing_count">Testing %d configurations…</string>
-    <string name="connection_test_available">Success: HTTP connection took %dms</string>
+    <string name="connection_test_available">Success: ping [ %d , %d ] ms</string>
     <string name="connection_test_error">Fail to detect internet connection: %s</string>
     <string name="connection_test_fail">Internet Unavailable</string>
     <string name="connection_test_error_status_code">Error code: #%d</string>
@@ -341,7 +341,9 @@
         <item>China Whitelist</item>
         <item>China Blacklist</item>
         <item>Global</item>
-        <item>Iran Whitelist</item>
+        <item>Iran lite</item>
+        <item>Iran medium</item>
+        <item>Iran heavy</item>
     </string-array>
 
     <string-array name="vpn_bypass_lan">
