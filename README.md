@@ -1,5 +1,5 @@
-9# NikaNG
-NikaNG is a v2rayNG build upon [Mahsa-Core](https://github.com/GFW-knocker/Xray-core) (xray-core optimized for iran)
+9# BuraqNG
+BuraqNG is a v2rayNG build upon [Mahsa-Core](https://github.com/GFW-knocker/Xray-core) (xray-core optimized for iran)
 
 <img src="https://github.com/sams86125/BuraqNG/blob/master/NikaCover.jpg?raw=true" width="240" ><br>
 
@@ -10,7 +10,7 @@ NikaNG is a v2rayNG build upon [Mahsa-Core](https://github.com/GFW-knocker/Xray-
 
 
 ### is it offer free config?
-- no, NikaNG is pure client and does not have built-in free config
+- no, BuraqNG is pure client and does not have built-in free config
 - we recommend [MahsaNG](https://github.com/GFW-knocker/MahsaNG) if you need advanced features + free unlimited configs
 
 
